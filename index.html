@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apothecary Batch & Testing Log</title>
+    <style>
+        :root {
+            --bg-color: #f4f1ea;
+            --card-bg: #fffdf9;
+            --text-color: #2b2621;
+            --border-color: #d1c7b7;
+            --accent-color: #5c6b4d;
+            --accent-hover: #4a573e;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: var(--text-color);
+            letter-spacing: 0.5px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .full-width {
+            grid-column: span 2;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 6px;
+            font-size: 0.9em;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background-color: #fff;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+
+        button {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 1em;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-family: inherit;
+        }
+
+        button:hover {
+            background-color: var(--accent-hover);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 12px;
+        }
+
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 10px;
+            text-align: left;
+            font-size: 0.88em;
+        }
+
+        th {
+            background-color: #eae3d2;
+        }
+
+        .rating-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-weight: bold;
+            color: white;
+            background-color: var(--accent-color);
+        }
+
+        .clear-btn {
+            background-color: #8b3a3a;
+            margin-top: 10px;
+        }
+        .clear-btn:hover {
+            background-color: #6e2e2e;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Apothecary Batch & Response Log</h1>
+
+    <!-- Form Card -->
+    <div class="card">
+        <h2>Record Test Observation</h2>
+        <form id="logForm">
+            <div class="form-grid">
+                <div>
+                    <label for="date">Date & Time</label>
+                    <input type="datetime-local" id="date" required>
+                </div>
+
+                <div>
+                    <label for="formula">Formula Tested</label>
+                    <select id="formula" required>
+                        <option value="Menstrual Comfort Tincture">Menstrual Comfort Tincture</option>
+                        <option value="Deep Sleep Glycerite">Deep Sleep Nightly Glycerite</option>
+                        <option value="Focus & Alertness Tincture">Focus & Alertness Tincture</option>
+                        <option value="First-Aid Skin Salve">First-Aid Skin Salve</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="batchNum">Batch / Lot #</label>
+                    <input type="text" id="batchNum" placeholder="e.g., BATCH-001" required>
+                </div>
+
+                <div>
+                    <label for="dosage">Dosage / Amount Applied</label>
+                    <input type="text" id="dosage" placeholder="e.g., 1.0 mL or Thin layer" required>
+                </div>
+
+                <div>
+                    <label for="onset">Time to Relief (Onset)</label>
+                    <input type="text" id="onset" placeholder="e.g., 35 minutes" required>
+                </div>
+
+                <div>
+                    <label for="rating">Effectiveness Rating</label>
+                    <select id="rating" required>
+                        <option value="5/5 - Complete Relief">5/5 - Complete Relief</option>
+                        <option value="4/5 - Strong Relief">4/5 - Strong Relief</option>
+                        <option value="3/5 - Moderate Relief">3/5 - Moderate Relief</option>
+                        <option value="2/5 - Slight Relief">2/5 - Slight Relief</option>
+                        <option value="1/5 - No Noticeable Effect">1/5 - No Noticeable Effect</option>
+                    </select>
+                </div>
+
+                <div class="full-width">
+                    <label for="notes">Observations & Side Effects</label>
+                    <textarea id="notes" rows="3" placeholder="Note taste, palatability, GI comfort, duration of relief, etc."></textarea>
+                </div>
+
+                <div class="full-width">
+                    <button type="submit">Save Observation Entry</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Table Card -->
+    <div class="card">
+        <h2>Logged Observations</h2>
+        <div style="overflow-x: auto;">
+            <table id="logTable">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Formula</th>
+                        <th>Batch #</th>
+                        <th>Dosage</th>
+                        <th>Onset</th>
+                        <th>Rating</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <!-- Dynamic entries go here -->
+                </tbody>
+            </table>
+        </div>
+        <button class="clear-btn" onclick="clearLogs()">Clear All Saved Logs</button>
+    </div>
+</div>
+
+<script>
+    // Set default datetime to now
+    document.getElementById('date').value = new Date().toISOString().slice(0,16);
+
+    // Load saved logs on startup
+    document.addEventListener('DOMContentLoaded', loadLogs);
+
+    document.getElementById('logForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const entry = {
+            id: Date.now(),
+            date: document.getElementById('date').value.replace('T', ' '),
+            formula: document.getElementById('formula').value,
+            batchNum: document.getElementById('batchNum').value,
+            dosage: document.getElementById('dosage').value,
+            onset: document.getElementById('onset').value,
+            rating: document.getElementById('rating').value,
+            notes: document.getElementById('notes').value || 'N/A'
+        };
+
+        saveEntry(entry);
+        this.reset();
+        document.getElementById('date').value = new Date().toISOString().slice(0,16);
+    });
+
+    function saveEntry(entry) {
+        let logs = JSON.parse(localStorage.getItem('apothecary_logs')) || [];
+        logs.unshift(entry);
+        localStorage.setItem('apothecary_logs', JSON.stringify(logs));
+        renderTable();
+    }
+
+    function loadLogs() {
+        renderTable();
+    }
+
+    function renderTable() {
+        const logs = JSON.parse(localStorage.getItem('apothecary_logs')) || [];
+        const tbody = document.getElementById('tableBody');
+        tbody.innerHTML = '';
+
+        if (logs.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">No entries logged yet.</td></tr>';
+            return;
+        }
+
+        logs.forEach(log => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${log.date}</td>
+                <td><strong>${log.formula}</strong></td>
+                <td>${log.batchNum}</td>
+                <td>${log.dosage}</td>
+                <td>${log.onset}</td>
+                <td><span class="rating-badge">${log.rating.split(' - ')[0]}</span></td>
+                <td>${log.notes}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    function clearLogs() {
+        if (confirm('Are you sure you want to delete all saved test logs?')) {
+            localStorage.removeItem('apothecary_logs');
+            renderTable();
+        }
+    }
+</script>
+
+</body>
+</html>
